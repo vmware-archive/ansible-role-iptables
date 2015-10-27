@@ -1,0 +1,26 @@
+# {{ ansible_managed }}
+
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# DHCP interfaces
+{% for interface in iptables_dhcp_interfaces -%}
+auto {{ interface.device }}
+iface {{ interface.device}} inet dhcp
+{% endfor %}
+
+# Static interfaces
+{% for interface in iptables_static_interfaces -%}
+auto {{ interface.device }}
+iface {{ interface.device }} inet static
+    address {{ interface.address }}
+    netmask {{ interface.netmask }}
+    broadcast {{ interface.broadcast }}
+{% if interface.gateway is defined %}    gateway {{ interface.gateway }}{% endif %}
+{% endfor %}
+
+# the end

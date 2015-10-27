@@ -1,0 +1,66 @@
+# ansible-role-iptables
+
+[Ansible](https://github.com/ansible/ansible) module for manipulating
+Linux IPTables rules.
+
+## Requirements
+
+This role currently supports Debian/Ubuntu distros via ufw manipulation and otherwise
+via direct iptables manipulation. The general view is to allow a server to serve as
+both a firewall and NAT (masquerade). The masquerade would sits between the internal
+servers (e.g., consul in CNA applications) and the external world. Thus, the firewall
+server sits in the middle and is available to developers and installers,
+and can control the internal servers while providing them network access via NAT.
+
+## Role Variables
+```
+iptables_nat_networks:
+  # array of networks for which NAT services are desired.
+  - { internal_net: "172.16.69.0/24", external_dev: "eth0" }
+
+iptables_allowed_networks:
+  # array of networks to allow for full (unfirewalled) access
+  - "172.16.69.0/24"
+
+iptables_forwards:
+  # array of ports to forward, e.g.
+  - { interface: eth0, proto: tcp, inport: 443, fwd_address: 192.168.69.2, dport: 443 }
+
+iptables_enable_ports:
+  # array of ports to enable inbound to the external network interface
+  - { port: 443, proto: "tcp" }
+```
+
+## Example playbook
+
+```
+---
+- name: setup NAT and firewall rules
+  hosts: firewalls
+  remote_user: vmware
+  sudo: yes
+  roles:
+    - iptables
+  vars_files:
+    - vars/main.yml
+```
+
+# License and Copyright
+
+Copyright 2015 VMware, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+## Author Information
+
+This role was created in 2015 by [Tom Hite / VMware](http://www.vmware.com/).
