@@ -104,6 +104,15 @@
   notify:
     - restart ufw
 
+- name: setup kernel tracking
+  lineinfile:
+    dest: /etc/default/ufw
+    regexp: '^IPT_MODULES='
+    line: 'IPT_MODULES="{{ iptables_kernel_modules }}"'
+    state: present
+  notify:
+    - restart ufw
+
 - name: enable masquerading
   service: name=ufw state=started enabled=yes
   when: iptables_masquerade
