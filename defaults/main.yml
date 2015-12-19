@@ -14,4 +14,18 @@
 #  limitations under the License.
 #
 ---
+# Linux kernel modules to load in support of NAT or other needs.
+# The value listed is the default value.
 iptables_kernel_modules: "nf_conntrack_ftp nf_nat_ftp nf_conntrack_netbios_ns"
+
+# Networks on which to provide NAT masquerading.
+iptables_nat_networks: [[
+
+# Networks to allow free-flow traffic as 'trusted' networks.
+iptables_allowed_networks: []
+
+# Ports to forward to internal (behind the NAT) servers.
+iptables_forwards: []
+
+# Ports on to allow inbound traffic.
+iptables_enable_ports: []
