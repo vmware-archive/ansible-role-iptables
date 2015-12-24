@@ -19,7 +19,7 @@
 iptables_kernel_modules: "nf_conntrack_ftp nf_nat_ftp nf_conntrack_netbios_ns"
 
 # Networks on which to provide NAT masquerading.
-iptables_nat_networks: [[
+iptables_nat_networks: []
 
 # Networks to allow free-flow traffic as 'trusted' networks.
 iptables_allowed_networks: []
