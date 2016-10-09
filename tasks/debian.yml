@@ -92,14 +92,14 @@
 
 - name: Allow all access from trusted networks to this host
   ufw: rule=allow src={{ item }}
-  with_items: iptables_allowed_networks
+  with_items: "{{ iptables_allowed_networks }}"
   when: iptables_masquerade and iptables_allowed_networks is defined
   notify:
     - restart ufw
 
 - name: enable inbound ports
   ufw: rule=allow proto={{ item.proto }} port={{ item.port }}
-  with_items: iptables_enable_ports
+  with_items: "{{ iptables_enable_ports }}"
   when: iptables_masquerade and iptables_enable_ports is defined
   notify:
     - restart ufw
