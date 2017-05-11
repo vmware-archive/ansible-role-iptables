@@ -85,6 +85,20 @@
   notify:
     - restart ufw
 
+- name: allow port forwards in
+  ufw:
+    route: yes
+    rule: allow
+    direction: in
+    interface: "{{ item.interface }}"
+    dest: "{{ item.fwd_address }}"
+    to_port: "{{ item.dport | int }}"
+    proto: "{{ item.proto }}"
+  with_items: "{{ iptables_forwards }}"
+  when: iptables_masquerade and iptables_forwards is defined
+  notify:
+    - restart ufw
+
 - name: enable ssh (always)
   ufw: rule=allow name=OpenSSH
   notify:
